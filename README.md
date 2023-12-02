@@ -22,6 +22,8 @@
 
 <h1 align="center">Microsoft SQL Server OPENJSON Example</h1>
 
+A example query that demonstrates how to use the `OPENJSON` function in `Microsoft SQL Server`.
+
 `OPENJSON` is a table-valued function that parses `JSON` text and returns objects and properties from the `JSON` input as rows and columns. `OPENJSON` provides a rowset view over a `JSON` document that is useful for applying relational operators like `PIVOT` and `UNPIVOT`. `OPENJSON` can be used as the target of an `INSERT`, `UPDATE`, or `DELETE` statement, just like a regular table or view.
 
 ---------------
@@ -37,7 +39,7 @@
 
 ## Getting Started
 
-The `openjson.sql` file found in this repository contains a `T-SQL` script that demonstrates how to use the `OPENJSON` function in `Microsoft SQL Server`. 
+The `openjson.sql` file found in the root of this repository contains a `T-SQL` script that demonstrates how to use the `OPENJSON` function in `Microsoft SQL Server`. 
 
 The query was created as an answer for a question on [Stack Overflow](https://stackoverflow.com/) on `09/14/22` that I answered called [How to perform a two column split by linking your data in sql server](https://stackoverflow.com/questions/73575888/how-to-perform-a-two-column-split-by-linking-your-data-in-sql-server).
 
