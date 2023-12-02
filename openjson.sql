@@ -1,3 +1,9 @@
+-- View the Question on Stack Overflow:
+-- https://stackoverflow.com/questions/73575888/how-to-perform-a-two-column-split-by-linking-your-data-in-sql-server
+
+-- Answer Example Fiddle:
+-- https://dbfiddle.uk/yEGssKaq
+
 SELECT d.card_id, a.phase_history, a.firstTimeIn
 FROM cards d
 CROSS APPLY (
