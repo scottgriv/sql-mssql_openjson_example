@@ -1,7 +1,7 @@
 <!-- Begin README -->
 
 <div align="center">
-    <a href="https://github.com/scottgriv/sql-mssql-openjson_example" target="_blank">
+    <a href="https://github.com/scottgriv/sql-mssql_openjson_example" target="_blank">
         <img src="./docs/images/icon.png" width="150" height="150"/>
     </a>
 </div>
@@ -22,7 +22,7 @@
 
 <h1 align="center">Microsoft SQL Server OPENJSON Example</h1>
 
-A example query that demonstrates how to use the `OPENJSON` function in `Microsoft SQL Server`.
+An example query that demonstrates how to use the `OPENJSON` function in `Microsoft SQL Server`.
 
 `OPENJSON` is a table-valued function that parses `JSON` text and returns objects and properties from the `JSON` input as rows and columns. `OPENJSON` provides a rowset view over a `JSON` document that is useful for applying relational operators like `PIVOT` and `UNPIVOT`. `OPENJSON` can be used as the target of an `INSERT`, `UPDATE`, or `DELETE` statement, just like a regular table or view.
 
@@ -124,7 +124,7 @@ This project is released under the terms of **The Unlicense**, which allows you 
 **Author:** [Scott Grivner](https://github.com/scottgriv) <br>
 **Email:** [scott.grivner@gmail.com](mailto:scott.grivner@gmail.com) <br>
 **Website:** [scottgrivner.dev](https://www.scottgrivner.dev) <br>
-**Reference:** [Main Branch](https://github.com/scottgriv/sql-mssql-openjson_example) <br>
+**Reference:** [Main Branch](https://github.com/scottgriv/sql-mssql_openjson_example) <br>
 
 ---------------
 
