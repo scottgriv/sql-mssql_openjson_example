@@ -14,8 +14,8 @@ This file is used to connect this repository to the **PRG** project categorizati
 
 **Repository Tier:** Bronze <br>
 **Technology:** SQL, MSSQL, JSON, Stack Overflow <br>
-**Category:** Database <br>
-**Order:** 0 <br>
+**Category:** DBMS, Database <br>
+**Order:** 33 <br>
 
 ## Parameters
 
