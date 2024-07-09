@@ -4,6 +4,7 @@
 -- Answer Example Fiddle:
 -- https://dbfiddle.uk/yEGssKaq
 
+/*  For SQL Server 2016 (compatibility level 130+) and higher */
 SELECT d.card_id, a.phase_history, a.firstTimeIn
 FROM cards d
 CROSS APPLY (

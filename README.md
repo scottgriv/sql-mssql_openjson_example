@@ -39,7 +39,8 @@ An example query that demonstrates how to use the `OPENJSON` function in `Micros
 
 ## Getting Started
 
-The `openjson.sql` file found in the root of this repository contains a `T-SQL` script that demonstrates how to use the `OPENJSON` function in `Microsoft SQL Server`. 
+The `openjson_function.sql` file found in the root of this repository contains a `T-SQL` script that demonstrates how to use the `OPENJSON` function in `Microsoft SQL Server 2016 and above`. 
+The `xml_function.sql` file found in the root of this repository contains a `T-SQL` script that demonstrates how to use the `XML` functions in `Microsoft SQL Server 2014`. 
 
 The query was created as an answer for a question on [Stack Overflow](https://stackoverflow.com/) on `09/14/22` that I answered called [How to perform a two column split by linking your data in sql server](https://stackoverflow.com/questions/73575888/how-to-perform-a-two-column-split-by-linking-your-data-in-sql-server).
 
@@ -74,6 +75,7 @@ If anyone has any other suggestions on how to handle this I would appreciate it.
 
 You can use `OPENJSON` to convert the array rows into new rows by the `card_id` column, and use `TRIM` to remove any extraneous brackets and whitespaces. 
 
+    /*  For SQL Server 2016 (compatibility level 130+) and higher */
     SELECT d.card_id, a.phase_history, a.firstTimeIn
     FROM cards d
     CROSS APPLY (
@@ -98,7 +100,55 @@ The real solution, *however*, would be to adjust your database design. Storing m
 
 db<>fiddle [here][1].
 
+_Update_
+
+I've been recently asked to do this with an older version of SQL Server (SQL Server 2014). Because `OPENJSON` is only available in [SQL Server 2016 (compatibility level 130 or higher)][2], you should use a combination of `XML` functions, `CTEs`, and `CROSS APPLY` to achieve the same results as above. 
+
+    /*  For SQL Server 2014 */
+    WITH PhaseHistoryCTE AS (
+        SELECT 
+            d.card_id,
+            LTRIM(RTRIM(x.value('.', 'VARCHAR(50)'))) AS phase_history,
+            ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS rn
+        FROM 
+            cards d
+        CROSS APPLY (
+            SELECT CAST('<x>' + REPLACE(SUBSTRING(d.phase_history, 2, LEN(d.phase_history) - 2), ',', '</x><x>') + '</x>' AS XML) AS xmlValues
+        ) AS a
+        CROSS APPLY xmlValues.nodes('/x') AS SplitLoad(x)
+    ),
+    FirstTimeInCTE AS (
+        SELECT 
+            d.card_id,
+            LTRIM(RTRIM(x.value('.', 'VARCHAR(50)'))) AS firstTimeIn,
+            ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS rn
+        FROM 
+            cards d
+        CROSS APPLY (
+            SELECT CAST('<x>' + REPLACE(SUBSTRING(d.firstTimeIn, 2, LEN(d.firstTimeIn) - 2), ',', '</x><x>') + '</x>' AS XML) AS xmlValues
+        ) AS b
+        CROSS APPLY xmlValues.nodes('/x') AS SplitBOL(x)
+    )
+    SELECT 
+        p.card_id, 
+        p.phase_history, 
+        f.firstTimeIn
+    FROM 
+        PhaseHistoryCTE p
+    LEFT OUTER JOIN 
+        FirstTimeInCTE f
+    ON 
+        p.rn = f.rn
+    WHERE 
+        p.phase_history IN ('Start', 'Compliance')
+    AND 
+        p.card_id = 8837;
+
+db<>fiddle [here][3].
+
   [1]: https://dbfiddle.uk/yEGssKaq
+  [2]: https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql?view=sql-server-ver16
+  [3]: https://dbfiddle.uk/Py0vD6Zf
 
 ## Resources
 
@@ -108,6 +158,7 @@ db<>fiddle [here][1].
 - [Microsoft SQL Server - 2022 Home](https://www.microsoft.com/en-us/sql-server/sql-server-2022)
 - [Microsoft SQL Server - 2022 Documentation](https://learn.microsoft.com/en-us/sql/sql-server/?view=sql-server-ver16)
 - [Microsoft SQL Server - Downloads](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- [Microsoft SQL Server - OPENJSON](https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql?view=sql-server-ver16)
 - [Microsoft Excel](https://www.microsoft.com/en-us/microsoft-365/excel)
 - [JSON](https://www.json.org/json-en.html)
 - [JSON - Wikipedia](https://en.wikipedia.org/wiki/JSON)
